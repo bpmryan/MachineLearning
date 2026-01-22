@@ -1,7 +1,7 @@
+# question 1
 from matplotlib import pyplot as plt
 import numpy as np
 
-# question 1
 x = np.linspace(-np.pi, np.pi, 1000)    
 f = x * (np.sin(x)**2)
 g = -x * (np.sin(x)**2)
