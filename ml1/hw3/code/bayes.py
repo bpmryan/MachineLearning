@@ -5,21 +5,12 @@ class NaiveBayes:
     def __init__(self, X, y):
         self.X = X # X is a matrix   
         self.y = y # y is a vector
-        self.classes = np.unique(y)
-        # store data grouped in class to make probability calculations
-        self.priors = {c: np.mean(y == c) for c in self.classes}
-
-        # store the counts of each class
-        self.feature_counts = {}
-        for c in self.classes:
-            X_c = X[y == c]
-            self.feature_counts[c] = []
-            for i in range(X.shape[1]):
-                values, counts = np.unique(X_c[:, i], return_counts=True)
-                self.feature_counts[c].append(dict(zip(values, counts)))
-        pass
+        
         
     def predict(self, x):
+        labels = np.unique(self.y)
+        prob = [self.pr_y_given_x(y, x) for y in labels]
+        return np.argmax(prob)
     
     def pr_y_given_x(self, y, x):
         # x is another vector
