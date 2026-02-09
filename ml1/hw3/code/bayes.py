@@ -6,7 +6,6 @@ class NaiveBayes:
         self.X = X # X is a matrix   
         self.y = y # y is a vector
         
-        
     def predict(self, x):
         labels = np.unique(self.y)
         prob = [self.pr_y_given_x(y, x) for y in labels]
@@ -34,6 +33,7 @@ class NaiveBayes:
 
 model = NaiveBayes(X, y)
 if __name__ == '__main__':
+    print(model.predict(np.array([1, 1, 25, 2])))
     preds = [model.predict(x) for x in X_]
     accuracy = np.sum(preds == y_) / y_.shape[0]
     print(f'Accuracy: {accuracy}')
