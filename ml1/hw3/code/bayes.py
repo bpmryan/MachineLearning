@@ -20,16 +20,13 @@ class NaiveBayes:
         pass
         
     def predict(self, x):
+    
+    def pr_y_given_x(self, y, x):
         # x is another vector
         loggies = np.zeros(x.shape)
         for i, xi in enumerate(x):
             loggies[i] = np.log(self.pr_xi_given_y(xi, i,  y))
-        return np.sum(loggies) + np.log(self.pr_y(y))    
-    
-    def pr_y_given_x(self, y, x):
-        prior = self.pr_y(y)
-        likelihood = np.prod([self.pr_xi_given_y(xi, i, y) for i, xi in enumerate(x)])
-        return prior * likelihood
+        return np.sum(loggies) + np.log(self.pr_y(y)) 
     
     def pr_xi_given_y(self, xi, i, y):
         # likelihood: P(xi|y)
