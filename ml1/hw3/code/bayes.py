@@ -38,7 +38,9 @@ class NaiveBayes:
         
     def pr_y(self, y):
         # prior probability P(y)
-        return self.priors[y]
+        count = np.sum(self.y == y)
+        total = self.y.shape[0]
+        return count / total
 
 model = NaiveBayes(X, y)
 if __name__ == '__main__':
