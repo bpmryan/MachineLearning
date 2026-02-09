@@ -30,12 +30,11 @@ class NaiveBayes:
     
     def pr_xi_given_y(self, xi, i, y):
         # likelihood: P(xi|y)
-        counts_dict = self.feature_counts[y][i]
-        count = counts_dict.get(xi, 0)
-        total = sum(counts_dict.values())
-        num_values = len(set(self.X[:, i]))
-        return (count + 1) / (total + num_values)
-        
+        filtered = self.X[self.y == y]
+        count = np.sum(filtered[:, i] == xi) 
+        probability = count / filtered.shape[0]
+        return probability if probability > 0 else 2**(-32)
+            
     def pr_y(self, y):
         # prior probability P(y)
         count = np.sum(self.y == y)
