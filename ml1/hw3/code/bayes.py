@@ -20,8 +20,11 @@ class NaiveBayes:
         pass
         
     def predict(self, x):
-        posteriors = {c: self.pr_y_given_x(c, x) for c in self.classes}
-        return max(posteriors, key=posteriors.get)
+        # x is another vector
+        loggies = np.zeros(x.shape)
+        for i, xi in enumerate(x):
+            loggies[i] = np.log(self.pr_xi_given_y(xi, i,  y))
+        return np.sum(loggies) + np.log(self.pr_y(y))    
     
     def pr_y_given_x(self, y, x):
         prior = self.pr_y(y)
