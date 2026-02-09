@@ -3,8 +3,8 @@ from data import X, y, X_, y_
 
 class NaiveBayes:
     def __init__(self, X, y):
-        self.X = X
-        self.y = y
+        self.X = X # X is a matrix   
+        self.y = y # y is a vector
         self.classes = np.unique(y)
         # store data grouped in class to make probability calculations
         self.priors = {c: np.mean(y == c) for c in self.classes}
@@ -22,13 +22,11 @@ class NaiveBayes:
     def predict(self, x):
         posteriors = {c: self.pr_y_given_x(c, x) for c in self.classes}
         return max(posteriors, key=posteriors.get)
-        pass
     
     def pr_y_given_x(self, y, x):
         prior = self.pr_y(y)
         likelihood = np.prod([self.pr_xi_given_y(xi, i, y) for i, xi in enumerate(x)])
         return prior * likelihood
-        pass
     
     def pr_xi_given_y(self, xi, i, y):
         # likelihood: P(xi|y)
@@ -37,12 +35,10 @@ class NaiveBayes:
         total = sum(counts_dict.values())
         num_values = len(set(self.X[:, i]))
         return (count + 1) / (total + num_values)
-        pass
         
     def pr_y(self, y):
         # prior probability P(y)
         return self.priors[y]
-        pass
 
 model = NaiveBayes(X, y)
 if __name__ == '__main__':
