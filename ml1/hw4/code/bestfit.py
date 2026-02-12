@@ -23,5 +23,3 @@ plt.legend()
 plt.tight_layout()
 
 plt.show()
-# plt.savefig('best_fit_plot.png')
-# print("Plot saved as 'best_fit_plot.png'. Open this file in Windows to see the result.")
