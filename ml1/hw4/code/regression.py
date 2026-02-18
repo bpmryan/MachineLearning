@@ -41,10 +41,19 @@ titles = [
 #     plt.tight_layout()
 #     plt.show()
 
-# Question 2.1 RM (column 5) and LSTAT (column 12) are the most correlated.
+# Question 4.1 RM (column 5) and LSTAT (column 12) are the most correlated.
 Xy = np.column_stack((Xy[:, 5], Xy[:, 12], np.ones(shape=Xy.shape[0]), Xy[:, -1]))
 print(Xy[:20])
 test = Xy[-100:]
 train = Xy[:-100]
 X, y = train[:, :-1], train[:, -1]
 _X, _y = test[:, :-1], test[:, -1]
+
+# 4.2 
+# linear regression model
+beta = np.linalg.inv(X.T @ X) @ X.T @ y
+
+# root mean squared error (rmse) 
+J = (_X @ beta - _y).T @ (_X @ beta - _y)
+rmse = np.sqrt(J / _X.shape[0])
+print(rmse)
