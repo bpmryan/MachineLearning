@@ -23,8 +23,9 @@ _X, _y = test[:, :-1], test[:, -1]
 
 def ridge_beta(X, y,  lmb):
     p = X.shape[1]
-    I = np.eye(p)
-    return np.linalg.inv(X.T @ X + lmb * I) @ X.T @ y
+    A = X.T @ X + lmb * np.eye(p)
+    B = X.T @ y
+    return np.linalg.solve(A, B)
 
 def rmse(X, y, lmd):
     beta = ridge_beta(X, y, lmd) 
