@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-PATH = '../../../_old/dsp/hw3/media/t10k-images-idx3-ubyte'
+PATH = '../media/t10k-images-idx3-ubyte'
 RNG = np.random.default_rng(3)
 
 with open(PATH, 'rb') as f:
@@ -14,24 +14,46 @@ with open(PATH, 'rb') as f:
 
 X = data.reshape(data.shape[0], data.shape[1] * data.shape[2])
 
-ep, K = 0.0001, 10
-means = X[RNG.integers(0, X.shape[0], K)]  # initial means
+# K = 0.0001
+ep, K = 3.5, 10
+means = X[RNG.integers(0, X.shape[0], K)].astype(float)  # initial means
 
 # <!-- remove from here
-fig = plt.figure(figsize=(12, 12))
-fig.suptitle('First 100 images arranged as a 10 by 10 table.')
-for i, cj in enumerate(X[:100]):
-    ax = fig.add_subplot(10, 10, i+1)
-    ax.imshow(cj.reshape(28, 28), cmap='grey')
-    ax.set_xticks([])
-    ax.set_yticks([])
-plt.tight_layout()
-plt.show()
+# fig = plt.figure(figsize=(12, 12))
+# fig.suptitle('First 100 images arranged as a 10 by 10 table.')
+# for i, cj in enumerate(X[:100]):
+#     ax = fig.add_subplot(10, 10, i+1)
+#     ax.imshow(cj.reshape(28, 28), cmap='grey')
+#     ax.set_xticks([])
+#     ax.set_yticks([])
+# plt.tight_layout()
+# plt.show()
 
-plt.title('Data Point 324: Label?')
-plt.imshow(data[324], cmap='gray')
-plt.tight_layout()
-plt.show()
+# plt.title('Data Point 324: Label?')
+# plt.imshow(data[324], cmap='gray')
+# plt.tight_layout()
+# plt.show()
+
+iteration = 0
+while True: 
+    iteration += 1
+
+    # assignment 
+    distances = np.linalg.norm(X[:, np.newaxis] - means, axis=2)
+    labels = np.argmin(distances, axis=1)
+
+    # update
+    new_means = np.array([X[labels == k].mean(axis=0) if np.any(labels == k) else means[k] for k in range(K)])
+
+    # calculate convergence
+    shift = np.mean(np.linalg.norm(new_means - means, axis=1))
+    print(f"Iteration {iteration}: Shift = {shift:.4f}")
+
+    means = new_means
+
+    if shift < ep:
+        print(f"Converged after {iteration} iterations.")
+        break
 # till here, and implement K-means -->
 
 rows, columns = 2, 5
