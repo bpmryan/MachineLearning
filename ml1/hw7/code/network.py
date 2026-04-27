@@ -12,13 +12,23 @@ L = len(weights) - 1
 
 # network
 def sigmoid(x):
-    pass
+    return 1 / (1 + np.exp(-x))
 
 def feedfoward(a, W, b, i=0):
-    pass
+    a = sigmoid(W[i] @ a + b[i])
+    return a if i == L else feedfoward(a, W, b, i + 1)
 
 def backpropagation(a_last, t,  W, b, i=0, gradient=[]):
-    pass
+    a = sigmoid(W[i] @ a_last + b[i])
+    if i == L:
+        pb = 2 * (a - t) * (a * (1 - a))
+        pW = pb @ a_last.T
+        return [(pb, pW)] + gradient
+    gradient = backpropagation(a, t, W, b, i + 1, gradient)
+    pb_last = gradient[0][0]
+    pb = (W[i + 1].T @ pb_last) * (a * (1 - a))
+    pW = pb @ a_last.T
+    return [(pb, pW)] + gradient 
 
 def epoch(X, y, W, b, eta):
     for x, t in zip(X, y):
@@ -28,7 +38,7 @@ def epoch(X, y, W, b, eta):
             W[i] -= eta * gradient[i][1]
 
 def rmse(y_pred, y):
-    return np.sort(np.mean(np.mean((y_pred - y)**2, axis=1 )))
+    return np.sqrt(np.mean(np.mean((y_pred - y)**2, axis=1)))
 
 eta = 0.1
 
