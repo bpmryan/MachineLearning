@@ -54,3 +54,8 @@ plt.ylabel('RMSE')
 plt.tight_layout()
 plt.plot(errors)
 plt.show()
+
+y_test_pred = np.array([feedfoward(x, weights, biases) for x in X_])
+# Get index of max value (predicted class) and compare to y_ (actual class)
+accuracy = np.mean(np.argmax(y_test_pred, axis=1) == y_.reshape(-1, 1))
+print(f"Final Testing Accuracy: {accuracy * 100:.2f}%")
